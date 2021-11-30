@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE: node:16.13.0-stretch
+        UID: 1000
+        GID: 1000
+    #environment:
+      #- DEBUG=1
+    image: react-test:v0.1
+    volumes:
+      - "/home/hyp/.local/lib/code-server-3.12.0:/home/user/.local/lib/code-server"
+      - "/home/hyp/.local/share/code-server:/home/user/.local/share/code-server"
+      - "/home/hyp/.config/code-server/config.yaml:/home/user/.config/code-server/config.yaml"
+      - "../.:/home/user/project/"
+      #- "src_dir:dst_dir"
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+    command: /home/user/.local/lib/code-server/bin/code-server --bind-addr 0.0.0.0:8080
