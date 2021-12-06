@@ -7,6 +7,7 @@ import Style from "ol/style/Style";
 
 function VectorLayer({ source, style, zIndex = 0 }:{source: VectorSource<Geometry>, style: Style, zIndex: number}){
   const map = useContext(MapContext);
+  //console.log(source,style,zIndex)
 
   useEffect(() => {
     if (!map) return;

@@ -10,10 +10,6 @@ import { interaction } from "openlayers";
 function Map({ children, zoom, center }: {children: ReactNode, zoom: number, center: number[]}){
   const [map, setMap] = useState(new ol.Map({}));
   const mapRef = useRef<HTMLDivElement>(null);
-  console.log(zoom);
-  console.log(center);
-  console.log("childrenとは");
-  console.log(children);
 
   // on component mount
   useEffect(() => {

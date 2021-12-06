@@ -6,10 +6,6 @@ import TileSource from "ol/source/Tile";
 
 function TileLayer({ source, zIndex = 0 }: {source:TileSource, zIndex: number}){
   const map = useContext(MapContext);
-  console.log('TileLayersに入っている！！！！');
-  console.log(map);
-  console.log(zIndex);
-  console.log(source);
   useEffect(() => {
     if (!map) return;
 
