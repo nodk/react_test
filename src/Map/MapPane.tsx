@@ -1,37 +1,57 @@
-import React, { Component } from 'react';
+import React, { ReactNode, RefObject, useEffect, useRef, useState } from "react";
 // OpenLayers読み込み
-import Map from 'ol/Map';
-import View from 'ol/View';
-import TileLayer from 'ol/layer/Tile';
-import XYZ from 'ol/source/XYZ';
-import OSM from 'ol/source/OSM';
-import { fromLonLat } from 'ol/proj';
-import 'ol/ol.css';
-import './MapPane.css';
+import * as ol from "ol";
+import MapContext from "./MapContext";
+import "ol/ol.css";
+import "./MapPane.css";
+import { string } from "fp-ts";
+import { interaction } from "openlayers";
 
-class MapPane extends Component {
-    map: any;
-    container: any;
+function Map({ children, zoom, center }: {children: ReactNode, zoom: number, center: number[]}){
+  const [map, setMap] = useState(new ol.Map({}));
+  const mapRef = useRef<HTMLDivElement>(null);
+  console.log(zoom);
+  console.log(center);
+  console.log("childrenとは");
+  console.log(children);
 
-    componentDidMount() {
-        // マップ設定
-        this.map = new Map({
-            target: this.container,
-            layers: [
-                new TileLayer({
-                    source: new OSM()
-                }),
-            ],
-            view: new View({
-                center: fromLonLat([139.767, 35.681]),
-                zoom: 14,
-            }),
-        });
-    }
+  // on component mount
+  useEffect(() => {
+    let options = {
+      view: new ol.View({ zoom, center }),
+      layers: [],
+      controls: [],
+      overlays: [],
+    };
+    let mapObject = new ol.Map(options);
+    console.log("aaa");
+    console.log(mapObject);
+    mapObject.setTarget(mapRef.current as HTMLElement);
+    setMap(mapObject);
+    console.log(map);
+    return () => mapObject.setTarget(undefined);
+  }, []);
 
-    render() {
-        return <div className={'map'} ref={(e) => (this.container = e)} />;
-    }
-}
+  // zoom change handler
+  useEffect(() => {
+    if (!map) return;
+    map.getView().setZoom(zoom);
+  }, [zoom]);
 
-export default MapPane;
+  // center change handler
+  useEffect(() => {
+    if (!map) return;
+
+    map.getView().setCenter(center);
+  }, [center]);
+
+  return (
+    <MapContext.Provider value={ map }>
+      <div ref={mapRef} className="ol-map">
+        {children}
+      </div>
+    </MapContext.Provider>
+  );
+};
+
+export default Map;
