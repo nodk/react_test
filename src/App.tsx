@@ -39,8 +39,8 @@ const valid_geojson={
 
 function App() {
   const [count, setCount] = useState(0)
-  const eqjson:Eq<J.Json> = ({equals: (a, b)=>{const c = jdt.diff(a,b);console.log(c); return c.length == 0;}})
-  const [geoJsonObject, setGeoJsonObject] = useStable<J.Json>(valid_geojson,eqjson)//useState<J.Json>(valid_geojson)
+  const eqjson:Eq<J.Json> = ({equals: (a, b)=>{const c = jdt.diff(a,b);/*console.log(c); */return c.length == 0;}})
+  const [geoJsonObject, setGeoJsonObject] = useStable<J.Json>(valid_geojson,eqjson)
   const [center, setCenter] = useState([-94.9065, 38.9884]);
   const [zoom, setZoom] = useState(9);
   const [showLayer1, setShowLayer1] = useState(true);
